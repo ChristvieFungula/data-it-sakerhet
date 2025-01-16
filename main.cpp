@@ -5,7 +5,9 @@
 #include "user.h"
 #include <sstream>
 #include <iomanip>
+#include <cctype>
 #include <openssl/md5.h>
+#include <_ctype.h>
 
 using namespace std;
 
@@ -28,15 +30,41 @@ string md5(const std::string &str){
 
 // Välkomnar usern och visar menyn
 void showMenu(){
-    cout << "Välkommen!\n";
-    cout << "Vänligen välj ett alternativ\n";
-    cout << "1. Skapa användare\n";
-    cout << "2. Test login\n"; 
+  cout << "Välkommen!\n";
+  cout << "Vänligen välj ett alternativ\n";
+  cout << "1. Skapa användare\n";
+  cout << "2. Test login\n"; 
 }
 
-// Skapar användaren
-void createUser(){
+// Funktionen skapar användaren
+void createUser(string username, string password){
+  cout << "****************************\n";
+  cout << "      SKAPA ANVÄNDARE         ";
 
+// Bestämmer @ som en char
+  auto snabelA = [](char c){
+    return c == '@';
+  };
+
+  while(true){
+  cout << "Skriv in din mailadress: \n";
+  cin >> username;
+
+    // Letar efter om username har lagt till @ annars ge felmeddalen
+    if(find_if(username.begin(), username.end(), snabelA) !=username.end()){
+      continue;
+    } else{
+      cout << "Ogiltigt användarnamn: Måste innehålla @!";
+    }
+  
+// Fixa lösenordet 
+  cout << "Skriv in ditt lösenord\n";
+  cin >> password;
+    if(password.length() >= 8 || password.isupper());
+ 
+
+
+  }
 }
 
 
@@ -44,8 +72,8 @@ void createUser(){
 
 
 int main(int, char**){
-    //showMenu();
-    string theHash = md5("hejsan123");
+    showMenu();
+    string theHash = md5("Google");
     cout << theHash << endl;
 
 

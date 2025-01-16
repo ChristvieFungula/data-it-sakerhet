@@ -5,5 +5,8 @@
             "binaryPath": "/Users/chrisfungz/C++ - Projects/data-it-sakerhet/main.exe",
             "binaryArgs": []
         }
-    ]
+    ],
+    "files.associations": {
+        "string": "cpp"
+    }
 }
