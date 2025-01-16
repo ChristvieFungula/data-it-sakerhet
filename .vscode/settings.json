@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/chrisfungz/C++ - Projects/data-it-sakerhet",
+            "binaryPath": "/Users/chrisfungz/C++ - Projects/data-it-sakerhet/main.exe",
+            "binaryArgs": []
+        }
+    ]
+}
