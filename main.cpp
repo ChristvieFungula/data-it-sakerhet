@@ -2,14 +2,37 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
-#include "user.h"
 #include <sstream>
 #include <iomanip>
-#include <cctype>
 #include <openssl/md5.h>
-#include <_ctype.h>
+#include <stdlib.h>
+
 
 using namespace std;
+
+class User{
+    string userName;
+    string userPassword;
+
+public:
+    // Konstruktor
+    User(string &name, string &password)
+        : userName(name), userPassword(password){}
+
+    // Getter för username
+    string getUserName(){
+        return userName;
+
+    }
+
+    // Kontrollerar ifall lösenordet stämemer
+    bool controllPassword(string &password){
+        return userPassword == password;
+
+        
+    }
+    
+};
 
 string md5(const std::string &str){
   unsigned char hash[MD5_DIGEST_LENGTH];
@@ -34,14 +57,18 @@ void showMenu(){
   cout << "Vänligen välj ett alternativ\n";
   cout << "1. Skapa användare\n";
   cout << "2. Test login\n"; 
+  cout << "Action: ";
+
 }
 
 // Funktionen skapar användaren
-void createUser(string username, string password){
+void createUser(){
   cout << "****************************\n";
-  cout << "      SKAPA ANVÄNDARE         ";
+  cout << "      SKAPA ANVÄNDARE       \n";
 
-// Bestämmer @ som en char
+
+string username, password;
+// Lamba bestämmer @ som en char
   auto snabelA = [](char c){
     return c == '@';
   };
@@ -52,29 +79,63 @@ void createUser(string username, string password){
 
     // Letar efter om username har lagt till @ annars ge felmeddalen
     if(find_if(username.begin(), username.end(), snabelA) !=username.end()){
-      continue;
+      break;
     } else{
-      cout << "Ogiltigt användarnamn: Måste innehålla @!";
+      
+      cout << "Ogiltigt användarnamn: Måste innehålla @!\n";
     }
-  
-// Fixa lösenordet 
-  cout << "Skriv in ditt lösenord\n";
-  cin >> password;
-    if(password.length() >= 8 || password.isupper());
- 
-
-
   }
-}
+
+  while(true){
+
+    // Fixa lösenordet 
+     cout << "Skriv in ditt lösenord\n";
+     cin >> password;
+
+      
+     int charCount = count_if(password.begin(), password.end(),
+                             [](char c){
+                              return true;
+                              });
+        if(charCount >= 8 ){
+          break;
+        }else{
+          cout << "ogilitg\n";
+        }
+  }
+
+
+  
+} 
 
 
 
 
 
 int main(int, char**){
+
+    int option;
+    string username, password;
+    
+    while(true){
     showMenu();
-    string theHash = md5("Google");
-    cout << theHash << endl;
+    cin >> option;
+
+    // Rensar terminalen
+    system("clear");
+      switch (option){
+      case 1:
+        createUser();
+        break;
+      
+      default:
+        break;
+      }
+
+      }
+
+    // string theHash = md5("Google");
+    // cout << theHash << endl;
 
 
 
