@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <openssl/md5.h>
 #include <stdlib.h>
+#include <regex>
 
 
 using namespace std;
@@ -15,17 +16,14 @@ class User{
     string userPassword;
 
 public:
-    // Konstruktor
     User(string &name, string &password)
         : userName(name), userPassword(password){}
 
-    // Getter för username
     string getUserName(){
         return userName;
 
     }
 
-    // Kontrollerar ifall lösenordet stämemer
     bool controllPassword(string &password){
         return userPassword == password;
 
@@ -34,7 +32,9 @@ public:
     
 };
 
-string md5(const std::string &str){
+vector<User> users;
+
+string md5(const string &str){
   unsigned char hash[MD5_DIGEST_LENGTH];
 
   MD5_CTX md5;
@@ -45,13 +45,12 @@ string md5(const std::string &str){
   stringstream ss;
 
   for(int i = 0; i < MD5_DIGEST_LENGTH; i++){
-    ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>( hash[i] );
+    ss << hex << setw(2) << setfill('0') << static_cast<int>( hash[i] );
   }
   return ss.str();
 }
 
 
-// Välkomnar usern och visar menyn
 void showMenu(){
   cout << "Välkommen!\n";
   cout << "Vänligen välj ett alternativ\n";
@@ -60,8 +59,15 @@ void showMenu(){
   cout << "Action: ";
 
 }
+void saveToUserFile(const string &username, const string &hashPassword){
+  ofstream file("user.txt");
+    if(file){
+      file << username << " : " << hashPassword << "\n";
+      file.close();
+    }
+  
+}
 
-// Funktionen skapar användaren
 void createUser(){
   cout << "****************************\n";
   cout << "      SKAPA ANVÄNDARE       \n";
@@ -88,24 +94,28 @@ string username, password;
 
   while(true){
 
-    // Fixa lösenordet 
      cout << "Skriv in ditt lösenord\n";
      cin >> password;
 
-      
-     int charCount = count_if(password.begin(), password.end(),
-                             [](char c){
-                              return true;
-                              });
-        if(charCount >= 8 ){
-          break;
+          regex upperCase{ "[A-Z]+" }; //here is the very simple expression for upper_case search
+          regex lowerCase{ "[a-z]+" }; //for lower-case
+          regex number{ "[0-9]+" }; //...
+          regex specialChar{ "[@!?]+"};
+
+        if(password.length() >= 8 &&
+            regex_search(password, upperCase) &&
+            regex_search(password, lowerCase) &&
+            regex_search(password, number) &&
+            regex_search(password, specialChar)){
+            break;
+
         }else{
-          cout << "ogilitg\n";
+          cout << "Lösenordet måste inne hålla:\n Minst 8 karaktärer\n Minst 1 stor bokstav\n Minst 1 liten bokstan\n Minst 1 siffra \n Minst 1 specialtecken ";
         }
   }
 
-
-  
+      string hashPassword = md5(password);
+      saveToUserFile(username, hashPassword);
 } 
 
 
@@ -115,27 +125,27 @@ string username, password;
 int main(int, char**){
 
     int option;
-    string username, password;
+  
     
     while(true){
-    showMenu();
-    cin >> option;
-
-    // Rensar terminalen
-    system("clear");
-      switch (option){
-      case 1:
-        createUser();
-        break;
+     showMenu();
+     cin >> option;
+     // Rensar terminalen
+     system("clear");
+     switch (option){
+     case 1:
+       createUser();
+       break;
+     case 2:
       
-      default:
-        break;
-      }
 
-      }
-
-    // string theHash = md5("Google");
-    // cout << theHash << endl;
+     default:
+       break;
+     
+     }
+    }
+    //  string theHash = md5("");
+    //  cout << theHash << endl;
 
 
 

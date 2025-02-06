@@ -4,6 +4,16 @@
             "cwd": "/Users/chrisfungz/C++ - Projects/data-it-sakerhet",
             "binaryPath": "/Users/chrisfungz/C++ - Projects/data-it-sakerhet/main.exe",
             "binaryArgs": []
+        },
+        {
+            "cwd": "/Users/chrisfungz/PROJECT!/C++ - Projects/data-it-sakerhet",
+            "binaryPath": "/Users/chrisfungz/PROJECT!/C++ - Projects/data-it-sakerhet/main.exe",
+            "binaryArgs": []
+        },
+        {
+            "cwd": "/Users/chrisfungz/PROJECT/CPP/data-it-sakerhet",
+            "binaryPath": "/Users/chrisfungz/PROJECT/CPP/data-it-sakerhet/main.exe",
+            "binaryArgs": []
         }
     ],
     "files.associations": {
