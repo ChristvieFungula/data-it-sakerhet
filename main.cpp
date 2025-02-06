@@ -60,12 +60,26 @@ void showMenu(){
 
 }
 void saveToUserFile(const string &username, const string &hashPassword){
-  ofstream file("user.txt");
+  ofstream file("user.txt", ios::app);
     if(file){
       file << username << " : " << hashPassword << "\n";
       file.close();
     }
   
+}
+
+bool usernameExists(const string &username) {
+    ifstream file("user.txt");
+    string line;
+
+    if (!file) return false;
+
+    while (getline(file, line)) {
+        if (line.find(username + " : ") == 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void createUser(){
@@ -84,13 +98,18 @@ string username, password;
   cin >> username;
 
     // Letar efter om username har lagt till @ annars ge felmeddalen
-    if(find_if(username.begin(), username.end(), snabelA) !=username.end()){
+    if(find_if(username.begin(), username.end(), snabelA) ==username.end()){
+      cout << "Ogiltigt användarnamnet: Måste innehålla @!\n";
+      continue;
+    }
+    
+    if(usernameExists(username)){
+      cout << "Användarnamnet är redan upptaget. Vänligen välj ett annat.\n";
+    }else{
       break;
-    } else{
-      
-      cout << "Ogiltigt användarnamn: Måste innehålla @!\n";
     }
   }
+  
 
   while(true){
 
@@ -110,13 +129,46 @@ string username, password;
             break;
 
         }else{
-          cout << "Lösenordet måste inne hålla:\n Minst 8 karaktärer\n Minst 1 stor bokstav\n Minst 1 liten bokstan\n Minst 1 siffra \n Minst 1 specialtecken ";
+          cout << "Lösenordet måste inne hålla:\nMinst 8 karaktärer.\nMinst 1 stor bokstav.\nMinst 1 liten bokstav.\nMinst 1 siffra. \nMinst 1 specialtecken. \n";
         }
   }
 
       string hashPassword = md5(password);
       saveToUserFile(username, hashPassword);
+      cout << "Användare skapad!\n\n"
 } 
+
+void testLogin(){
+  cout << "****************************\n";
+  cout << "         TEST LOGIN         \n";
+
+  string username, password, line;
+
+  cout << "Användarnamn: ";
+  cin >> username;
+  cout << "Lösenord: ";
+  cin >> password;
+
+  string hashedPassword = md5(password);
+  ifstream file("user.txt");
+
+  bool loginSucces = false;
+   while(getline(file, line)){
+    if(line == username + " : " + hashedPassword){
+      loginSucces = true;
+      break;
+    }
+   }
+
+  file.close();
+    if(loginSucces){
+      cout << "Inloggningen lyckades\n\n";
+    }else{
+      cout << "Fel användarnamn eller lösenord\n\n";
+    }
+
+
+}
 
 
 
@@ -131,15 +183,17 @@ int main(int, char**){
      showMenu();
      cin >> option;
      // Rensar terminalen
-     system("clear");
+    //  system("clear");
      switch (option){
      case 1:
        createUser();
        break;
      case 2:
-      
+      testLogin();
+      break;
 
      default:
+      cout << "Ogiltigt val! \n"
        break;
      
      }
